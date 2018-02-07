@@ -4,6 +4,7 @@ var axios = require('axios');
 var DiscoverManifestsDialog = require('DiscoverManifestsDialog');
 
 var OpenSourceManifestDialog = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     return {
       isFetchingRemoteManifest: false,
@@ -20,7 +21,7 @@ var OpenSourceManifestDialog = React.createClass({
         manifestFetchError: 'Please enter a remote manifest URL',
         isFetchingRemoteManifest: false
       });
-      this.refs.remoteManifestUrl.focus();
+      this.remoteManifestUrl.focus();
       return false;
     }
     var _this = this;
@@ -36,8 +37,8 @@ var OpenSourceManifestDialog = React.createClass({
         _this.props.onSuccessHandler(JSON.stringify(response.data));
 
         // clear the remote manifest url text field
-        _this.refs.remoteManifestUrl.value = '';
-        
+        _this.remoteManifestUrl.value = '';
+
         // close modal window
         var $openSourceManifestDialog = $(ReactDOM.findDOMNode(_this));
         $openSourceManifestDialog.modal('hide');
@@ -80,7 +81,7 @@ var OpenSourceManifestDialog = React.createClass({
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   },
   onDragEnter: function(evt) {
-    var $dropManifestContainer = $(ReactDOM.findDOMNode(this.refs.dropManifestContainer));
+    var $dropManifestContainer = $(ReactDOM.findDOMNode(this.dropManifestContainer));
     $dropManifestContainer.addClass('drop-manifest-container-drag');
   },
   onFileDrag: function(evt) {
@@ -95,17 +96,17 @@ var OpenSourceManifestDialog = React.createClass({
     if(manifestUrl !== null) {
       this.fetchRemoteManifest(manifestUrl);
     }
-    var $dropManifestContainer = $(ReactDOM.findDOMNode(this.refs.dropManifestContainer));
+    var $dropManifestContainer = $(ReactDOM.findDOMNode(this.dropManifestContainer));
     $dropManifestContainer.removeClass('drop-manifest-container-drag');
   },
   openDiscoverManifestsDialog: function() {
-    var $discoverManifestsDialog = $(ReactDOM.findDOMNode(this.refs.discoverManifestsDialog));
+    var $discoverManifestsDialog = $(ReactDOM.findDOMNode(this.discoverManifestsDialog));
     $discoverManifestsDialog.modal({
       backdrop: 'static'
     });
   },
   closeDiscoverManifestsDialog: function() {
-    var $discoverManifestsDialog = $(ReactDOM.findDOMNode(this.refs.discoverManifestsDialog));
+    var $discoverManifestsDialog = $(ReactDOM.findDOMNode(this.discoverManifestsDialog));
     $discoverManifestsDialog.modal('hide');
   },
   render: function() {
@@ -118,7 +119,7 @@ var OpenSourceManifestDialog = React.createClass({
               <h4 className="modal-title">Open Sequence</h4>
             </div>
             <div className="modal-body">
-              <div className="drop-manifest-container" ref="dropManifestContainer" onDragEnter={this.onDragEnter} onDragOver={this.onFileDrag} onDragLeave={this.onFileDrag} onDrop={this.onFileDrop}>
+              <div className="drop-manifest-container" ref={(ref) => this.dropManifestContainer = ref} onDragEnter={this.onDragEnter} onDragOver={this.onFileDrag} onDragLeave={this.onFileDrag} onDrop={this.onFileDrop}>
                 <div className="drag-and-drop-message"><i className="fa fa-arrow-circle-down"></i>{this.props.isFetchingLocalManifest ? ' Uploading...' : ' Drag and drop manifest here'}</div>
                 <div className="text-muted"><i className="fa fa-info-circle"></i> Drop a remote manifest file via IIIF icon</div>
               </div>
@@ -127,15 +128,15 @@ var OpenSourceManifestDialog = React.createClass({
                   <button type="submit" onClick={this.openDiscoverManifestsDialog} className="btn btn-default discover-manifests-dialog-open-button"><i className="fa fa-search"></i> Discover Manifests</button>
                 </div>
               </div>
-              <DiscoverManifestsDialog ref="discoverManifestsDialog" selectManifestHandler={this.fetchRemoteManifest} closeModal={this.closeDiscoverManifestsDialog} />
-              <input type="text" ref="remoteManifestUrl" className="form-control" placeholder="Enter a remote manifest URL" />
+              <DiscoverManifestsDialog ref={(ref) => this.discoverManifestsDialog = ref} selectManifestHandler={this.fetchRemoteManifest} closeModal={this.closeDiscoverManifestsDialog} />
+              <input type="text" ref={(ref) => this.removeManifestUrl = ref} className="form-control" placeholder="Enter a remote manifest URL" />
               <div className="fetch-remote-manifest-status">
                 {this.displayFetchRemoteManifestStatus()}
               </div>
               {this.displayErrorMessage()}
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary" onClick={() => this.fetchRemoteManifest(this.refs.remoteManifestUrl.value)}><i className="fa fa-folder-open"></i> Open</button>
+              <button type="button" className="btn btn-primary" onClick={() => this.fetchRemoteManifest(this.remoteManifestUrl.value)}><i className="fa fa-folder-open"></i> Open</button>
             </div>
           </div>
         </div>

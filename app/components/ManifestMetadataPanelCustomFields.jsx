@@ -7,6 +7,7 @@ var MetadataFieldDialog = require('MetadataFieldDialog');
 var Utils = require('Utils');
 
 var ManifestMetadataPanelCustomFields = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     return {
       selectedMetadataFieldToViewJson: {
@@ -69,7 +70,7 @@ var ManifestMetadataPanelCustomFields = React.createClass({
     });
 
     // open the metadata field dialog
-    var $metadataFieldDialog = $(ReactDOM.findDOMNode(this.refs.metadataFieldDialog));
+    var $metadataFieldDialog = $(ReactDOM.findDOMNode(this.metadataFieldDialog));
     $metadataFieldDialog.modal({
       backdrop: 'static'
     });
@@ -78,7 +79,7 @@ var ManifestMetadataPanelCustomFields = React.createClass({
     var _this = this;
     return (
       <div>
-        <MetadataFieldDialog ref="metadataFieldDialog" metadataField={this.state.selectedMetadataFieldToViewJson} />
+        <MetadataFieldDialog ref={(ref) => this.metadataFieldDialog = ref} metadataField={this.state.selectedMetadataFieldToViewJson} />
         {
           Object.keys(this.state.activeMetadataFields).map(function(fieldIndex) {
             var metadataField = _this.state.activeMetadataFields[fieldIndex];
@@ -115,11 +116,11 @@ var ManifestMetadataPanelCustomFields = React.createClass({
                               <span><a href="javascript:;" title="View JSON metadata" onClick={() => _this.viewJsonMetadata(metadataField.label, JSON.stringify(metadataField.value, null, 2))}>View JSON metadata</a></span>
                             );
                           }
-                        })()}                    
+                        })()}
                       </dd>
                     );
                   }
-                })()}                    
+                })()}
                 {(() => {
                   return (
                     <dd className="metadata-field-delete">

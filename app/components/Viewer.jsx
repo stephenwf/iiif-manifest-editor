@@ -20,7 +20,7 @@ var Viewer = React.createClass({
     var _this = this;
 
     // set the focus on the top-level viewer container
-    var $viewerContainer = $(ReactDOM.findDOMNode(this.refs.viewerContainer));
+    var $viewerContainer = $(ReactDOM.findDOMNode(this.viewerContainer));
     $viewerContainer.focus();
 
     // handle key down events on the viewer container
@@ -54,7 +54,7 @@ var Viewer = React.createClass({
     this.setState({
       helpSection: helpSection
     });
-    var $onScreenHelp = $(ReactDOM.findDOMNode(this.refs.onScreenHelp));
+    var $onScreenHelp = $(ReactDOM.findDOMNode(this.onScreenHelp));
     $onScreenHelp.modal({
       backdrop: 'static'
     });
@@ -87,7 +87,7 @@ var Viewer = React.createClass({
             serviceId = serviceId + '/';
           }
           openSeadragonConf.tileSources = [serviceId + 'info.json'];
-        } 
+        }
         else {
           // display placeholder image for empty canvases
           openSeadragonConf.tileSources = {
@@ -128,8 +128,8 @@ var Viewer = React.createClass({
     var canvasLabelPath = "sequences/0/canvases/" + canvasIndex + "/label";
     var openSeadragonConf = this.getOpenSeadragonConf();
     return (
-      <div className="viewer-container" tabIndex="0" ref="viewerContainer">
-        <OnScreenHelp ref="onScreenHelp" section={this.state.helpSection} />
+      <div className="viewer-container" tabIndex="0" ref={(ref) => this.viewerContainer = ref}>
+        <OnScreenHelp ref={(ref) => this.onScreenHelp = ref} section={this.state.helpSection} />
         <div className="osd-custom-toolbar">
           <div id="zoom-in"><i className="fa fa-search-plus"></i></div>
           <div id="zoom-out"><i className="fa fa-search-minus"></i></div>
@@ -151,7 +151,7 @@ var Viewer = React.createClass({
             );
           }
         })()}
-        <OpenSeadragonViewer ref="openSeadragonViewer" config={openSeadragonConf} key={JSON.stringify(openSeadragonConf)} />
+        <OpenSeadragonViewer ref={(ref) => this.openSeadragonViewer = ref} config={openSeadragonConf} key={JSON.stringify(openSeadragonConf)} />
         {(() => {
           if(canvasIndex < sequenceLength-1) {
             return (

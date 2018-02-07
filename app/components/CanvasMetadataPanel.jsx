@@ -10,6 +10,7 @@ var uuid = require('uuid');
 var Utils = require('Utils');
 
 var CanvasMetadataPanel = React.createClass({
+  customRefs: {},
   saveMetadataFieldToStore: function(fieldValue, path, fieldName) {
     this.props.dispatch(actions.updateMetadataFieldValueAtPath(fieldValue, path));
   },
@@ -141,7 +142,7 @@ var CanvasMetadataPanel = React.createClass({
   },
   openImageAnnotationChoiceDialog: function() {
     // open the image annnotation choice modal dialog
-    var $imageAnnotationDialog = $(ReactDOM.findDOMNode(this.refs.imageAnnotationDialog));
+    var $imageAnnotationDialog = $(ReactDOM.findDOMNode(this.imageAnnotationDialog));
     $imageAnnotationDialog.modal({
       backdrop: 'static'
     });
@@ -149,7 +150,7 @@ var CanvasMetadataPanel = React.createClass({
   handleImageAnnotationChoice: function(selectedMethod, uri) {
     if(selectedMethod == "imageAnnotation") {
       this.handleImageAnnotationUri(uri);
-    } 
+    }
     else if(selectedMethod == "imageUri") {
       this.handleImageUri(uri);
     } else {
@@ -169,7 +170,7 @@ var CanvasMetadataPanel = React.createClass({
       var canvasImageIdPath = "sequences/0/canvases/" + sequence.getCanvasIndexById(canvas.id) + "/images/0";
       return (
         <div className="metadata-sidebar-panel">
-          <ImageAnnotationChoiceDialog ref="imageAnnotationDialog" onSubmitHandler={this.handleImageAnnotationChoice} canvas={canvas} addOrReplace={image !== undefined ? 'replace' : 'add'} />
+          <ImageAnnotationChoiceDialog ref={(ref) => this.imageAnnotationDialog = ref} onSubmitHandler={this.handleImageAnnotationChoice} canvas={canvas} addOrReplace={image !== undefined ? 'replace' : 'add'} />
           <MetadataSidebarCanvas canvasId={this.props.selectedCanvasId}/>
           <div className="row">
             <div className="col-md-12">
@@ -178,33 +179,33 @@ var CanvasMetadataPanel = React.createClass({
           </div>
           <hr/>
           {this.displayImageAnnotationFetchErrors()}
-          
+
           <dl>
-            <dt className="metadata-field-label">Canvas Label</dt> 
+            <dt className="metadata-field-label">Canvas Label</dt>
             <dd className="metadata-field-value">
               <EditableTextArea fieldValue={Utils.getLocalizedPropertyValue(canvas.getLabel())} path={canvasLabelPath} onUpdateHandler={this.saveMetadataFieldToStore}/>
             </dd>
           </dl>
           <dl>
-            <dt className="metadata-field-label">Canvas Width</dt> 
+            <dt className="metadata-field-label">Canvas Width</dt>
             <dd className="metadata-field-value">
               <EditableTextArea fieldName="canvasWidth" fieldValue={canvas.getWidth().toString()} path={canvasWidthPath} onUpdateHandler={this.saveMetadataFieldToStore}/>
             </dd>
           </dl>
           <dl>
-            <dt className="metadata-field-label">Canvas Height</dt> 
+            <dt className="metadata-field-label">Canvas Height</dt>
             <dd className="metadata-field-value">
               <EditableTextArea fieldName="canvasHeight" fieldValue={canvas.getHeight().toString()} path={canvasHeightPath} onUpdateHandler={this.saveMetadataFieldToStore}/>
             </dd>
           </dl>
           <dl>
-            <dt className="metadata-field-label">Image URI</dt> 
+            <dt className="metadata-field-label">Image URI</dt>
             <dd className="metadata-field-value">
               <EditableTextArea fieldValue={resource !== undefined ? resource['@id'] : 'N/A'} onUpdateHandler={this.handleImageUri}/>
             </dd>
           </dl>
           <dl>
-            <dt className="metadata-field-label">Image Annotation URI</dt> 
+            <dt className="metadata-field-label">Image Annotation URI</dt>
             <dd className="metadata-field-value">
               <EditableTextArea fieldValue={image !== undefined ? image.id : 'N/A'} path={canvasImageIdPath} onUpdateHandler={this.updateImageAnnotationForCanvasWithId}/>
             </dd>

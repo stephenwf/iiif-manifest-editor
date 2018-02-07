@@ -8,6 +8,7 @@ var {SortableItems, SortableItem} = require('react-sortable-component');
 var OnScreenHelp = require('OnScreenHelp');
 
 var ThumbnailStrip = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     return {
       selectedCanvasStartIndex: undefined,
@@ -19,7 +20,7 @@ var ThumbnailStrip = React.createClass({
     this.setState({
       helpSection: helpSection
     });
-    var $onScreenHelp = $(ReactDOM.findDOMNode(this.refs.onScreenHelp));
+    var $onScreenHelp = $(ReactDOM.findDOMNode(this.onScreenHelp));
     $onScreenHelp.modal({
       backdrop: 'static'
     });
@@ -160,7 +161,7 @@ var ThumbnailStrip = React.createClass({
     this.toggleDeleteSelectedCanvasesPrompt(true);
   },
   toggleDeleteSelectedCanvasesPrompt: function(toggleDisplay) {
-    var $deleteSelectedCanvasPrompt = $(ReactDOM.findDOMNode(this.refs.deleteSelectedCanvasPrompt));
+    var $deleteSelectedCanvasPrompt = $(ReactDOM.findDOMNode(this.deleteSelectedCanvasPrompt));
     if(toggleDisplay) {
       $deleteSelectedCanvasPrompt.slideDown();
     } else {
@@ -191,8 +192,8 @@ var ThumbnailStrip = React.createClass({
     var _this = this;
     return (
       <div className="thumbnail-strip-container" onDragOver={this.cancelDragOver} onDrop={this.addCanvases}>
-        <OnScreenHelp ref="onScreenHelp" section={this.state.helpSection} />
-        <div className="alert alert-danger delete-selected-canvases-prompt" ref="deleteSelectedCanvasPrompt">
+        <OnScreenHelp ref={(ref) => this.onScreenHelp = ref} section={this.state.helpSection} />
+        <div className="alert alert-danger delete-selected-canvases-prompt" ref={(ref) => this.deleteSelectedCanvasPrompt = ref}>
           Delete selected canvases?
           <button type="button" className="btn btn-default" onClick={this.deleteSelectedCanvases}><i className="fa fa-check"></i> OK</button>
           <button type="button" className="btn btn-default" onClick={this.deSelectCanvases}><i className="fa fa-times"></i> Cancel</button>

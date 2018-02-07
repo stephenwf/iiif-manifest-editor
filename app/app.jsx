@@ -1,4 +1,6 @@
 var React = require('react');
+React.PropTypes = require('prop-types');
+React.createClass = require('create-react-class');
 var ReactDOM = require('react-dom');
 var {Provider} = require('react-redux');
 var {Route, Router, IndexRoute, hashHistory} = require('react-router');

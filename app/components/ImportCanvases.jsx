@@ -7,6 +7,7 @@ var ThumbnailStrip = require('ThumbnailStrip');
 var MetadataSidebar = require('MetadataSidebar');
 
 var ImportCanvases = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     return {
       sourceManifestBrowser: undefined
@@ -25,7 +26,7 @@ var ImportCanvases = React.createClass({
   },
   componentDidMount: function() {
     this.setState({
-      sourceManifestBrowser: this.refs.sourceManifestBrowser
+      sourceManifestBrowser: this.sourceManifestBrowser
     });
   },
   render: function() {
@@ -42,7 +43,7 @@ var ImportCanvases = React.createClass({
         <div className="import-canvases-container container-fluid">
           <div className="row">
             <div className={sourceManifestBrowserClasses}>
-              <SourceManifestBrowser ref="sourceManifestBrowser"/>
+              <SourceManifestBrowser ref={(ref) => this.sourceManifestBrowser = ref}/>
               <ThumbnailStrip/>
             </div>
             <MetadataSidebar sourceManifestBrowser={this.state.sourceManifestBrowser}/>

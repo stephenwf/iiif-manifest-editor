@@ -4,6 +4,7 @@ var SourceManifestWindow = require('SourceManifestWindow');
 var uuid = require('uuid');
 
 var SourceManifestBrowser = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     var sourceManifests = (localStorage && localStorage.getItem('sourceManifests')) ? JSON.parse(localStorage.getItem('sourceManifests')) : [];
     return {
@@ -33,7 +34,7 @@ var SourceManifestBrowser = React.createClass({
       sourceManifests: sourceManifests
     }, function() {
       // auto scroll to the end of the Sequence Browser when a new sequence is opened
-      var $manifestBrowser = $(ReactDOM.findDOMNode(this.refs.manifestBrowser));
+      var $manifestBrowser = $(ReactDOM.findDOMNode(this.manifestBrowser));
       var scrollPosition = 0;
       $manifestBrowser.children().each(function(index, elem){
         scrollPosition += ($(elem).width());
@@ -54,7 +55,7 @@ var SourceManifestBrowser = React.createClass({
     });
 
     // retain the state of the opened source manifests in local storage
-    if(localStorage) {    
+    if(localStorage) {
       localStorage.setItem('sourceManifests', JSON.stringify(sourceManifests));
       if(localStorage.getItem('sourceManifests') === '[]') {
         localStorage.removeItem('sourceManifests');
@@ -72,7 +73,7 @@ var SourceManifestBrowser = React.createClass({
   },
   renderLocalStorageErrorMessage: function() {
     return (
-      <div id="local-storage-error-message" className="alert alert-danger" role="alert" ref="localStorageErrorMessage">
+      <div id="local-storage-error-message" className="alert alert-danger" role="alert" ref={(ref) => this.localStorageErrorMessage = ref}>
         <button type="button" className="close" onClick={this.hideErrorMessage} aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -81,20 +82,20 @@ var SourceManifestBrowser = React.createClass({
     );
   },
   displayErrorMessage: function() {
-    var $localStorageErrorMessage = $(ReactDOM.findDOMNode(this.refs.localStorageErrorMessage));
+    var $localStorageErrorMessage = $(ReactDOM.findDOMNode(this.localStorageErrorMessage));
     $localStorageErrorMessage.fadeIn();
     setTimeout(function() {
       $localStorageErrorMessage.fadeOut();
     }, 10000);
   },
   hideErrorMessage: function() {
-    var $localStorageErrorMessage = $(ReactDOM.findDOMNode(this.refs.localStorageErrorMessage));
+    var $localStorageErrorMessage = $(ReactDOM.findDOMNode(this.localStorageErrorMessage));
     $localStorageErrorMessage.fadeOut();
   },
   render: function() {
     var _this = this;
     return (
-      <div key={this.state.uuid} className="source-manifest-browser" ref="manifestBrowser">
+      <div key={this.state.uuid} className="source-manifest-browser" ref={(ref) => this.manifestBrowser = ref}>
         { this.renderOpenSequenceMessage() }
         {
           this.state.sourceManifests.map(function(manifestData, manifestIndex) {

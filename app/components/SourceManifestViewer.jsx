@@ -8,6 +8,7 @@ import OpenSeadragonViewer from 'OpenSeadragonViewer';
 var OnScreenHelp = require('OnScreenHelp');
 
 var SourceManifestViewer = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     var sidebarToggleIcon = this.props.showMetadataSidebar ? 'on' : 'off';
     return {
@@ -20,7 +21,7 @@ var SourceManifestViewer = React.createClass({
     this.setState({
       helpSection: helpSection
     });
-    var $onScreenHelp = $(ReactDOM.findDOMNode(this.refs.onScreenHelp));
+    var $onScreenHelp = $(ReactDOM.findDOMNode(this.onScreenHelp));
     $onScreenHelp.modal({
       backdrop: 'static'
     });
@@ -47,7 +48,7 @@ var SourceManifestViewer = React.createClass({
       if(canvasImages.length > 0) {
         var serviceId = canvasImages[0].getResource().getServices()[0].id;
         openSeadragonConf.tileSources = [serviceId + '/info.json'];
-      } 
+      }
     }
     return openSeadragonConf;
   },
@@ -59,7 +60,7 @@ var SourceManifestViewer = React.createClass({
     this.setShowMetadataSidebar(!this.props.showMetadataSidebar);
   },
   showSourceManifestMetadataDialog: function() {
-    var $sourceManifestMetadataDialog = $(ReactDOM.findDOMNode(this.refs.sourceManifestMetadataDialog));
+    var $sourceManifestMetadataDialog = $(ReactDOM.findDOMNode(this.sourceManifestMetadataDialog));
     $sourceManifestMetadataDialog.modal({
       backdrop: 'static'
     });
@@ -78,7 +79,7 @@ var SourceManifestViewer = React.createClass({
     var openSeadragonConf = this.getOpenSeadragonConf();
     return (
       <div className="source-manifest-viewer">
-        <OnScreenHelp ref="onScreenHelp" section={this.state.helpSection} />
+        <OnScreenHelp ref={(ref) => this.onScreenHelp = ref} section={this.state.helpSection} />
         <div className="osd-custom-toolbar">
           <a onClick={() => this.props.onRemoveHandler(this.props.manifestIndex)} className="source-manifest-remove-button" title="Remove sequence"><i className="fa fa-times-circle"></i></a>
           <span id={'zoom-in-' + this.props.manifestIndex}><i className="fa fa-search-plus"></i></span>
@@ -91,7 +92,7 @@ var SourceManifestViewer = React.createClass({
           <a onClick={() => this.showSourceManifestMetadataDialog()} className="source-manifest-metadata-info-button" title="Show manifest metadata"><i className="fa fa-info"></i></a>
           <a className="help-icon" href="javascript:;" onClick={() => this.showHelp('SourceManifestViewer')} ><i className="fa fa-question-circle-o"></i></a>
         </div>
-        <SourceManifestMetadataDialog ref="sourceManifestMetadataDialog" manifestData={JSON.parse(this.props.manifestData)} />
+        <SourceManifestMetadataDialog ref={(ref) => this.sourceManifestMetadataDialog = ref} manifestData={JSON.parse(this.props.manifestData)} />
         {(() => {
           if(this.props.selectedCanvasIndex > 0) {
             return (

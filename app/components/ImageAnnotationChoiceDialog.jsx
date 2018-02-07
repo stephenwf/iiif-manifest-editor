@@ -4,8 +4,9 @@ var {connect} = require('react-redux');
 var Utils = require('Utils');
 
 var ImageAnnotationChoiceDialog = React.createClass({
+  customRefs: {},
   getInitialState: function() {
-    return { 
+    return {
       showHelp: false,
       selectedMethod: "imageUri",
       selectedMethodText: "IIIF Image URI"
@@ -15,7 +16,7 @@ var ImageAnnotationChoiceDialog = React.createClass({
     this.setState({ showHelp: !this.state.showHelp });
   },
   updateSelectedMethod: function(e) {
-    this.setState({ 
+    this.setState({
       selectedMethod: e.target.id,
       selectedMethodText: e.target.value
     });
@@ -38,8 +39,8 @@ var ImageAnnotationChoiceDialog = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    this.props.onSubmitHandler(this.state.selectedMethod, this.refs.uri.value);
-    this.refs.uri.value = '';
+    this.props.onSubmitHandler(this.state.selectedMethod, this.uri.value);
+    this.uri.value = '';
     // close modal window
     var $imageAnnotationChoiceDialog = $(ReactDOM.findDOMNode(this));
     $imageAnnotationChoiceDialog.modal('hide');
@@ -109,7 +110,7 @@ var ImageAnnotationChoiceDialog = React.createClass({
                     </div>
                     <div className="row">
                       <div className="col-md-12">
-                        <input ref="uri" className="form-control" type="text" name="uri" placeholder={this.getUriSyntax()} />
+                        <input ref={(ref) => this.uri = ref} className="form-control" type="text" name="uri" placeholder={this.getUriSyntax()} />
                       </div>
                     </div>
                     <div className="row">

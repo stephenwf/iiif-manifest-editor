@@ -22,7 +22,7 @@ var SaveManifestDialog = React.createClass({
     a.click();
   },
   setManifestFilename: function() {
-    var manifestFilenameToSave = this.refs.manifestFilename.value;
+    var manifestFilenameToSave = this.manifestFilename.value;
     this.props.dispatch(actions.setManifestFilename(manifestFilenameToSave));
     this.downloadManifestData(manifestFilenameToSave);
   },

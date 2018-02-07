@@ -7,6 +7,7 @@ var BulkActionsPanel = require('BulkActionsPanel');
 var OnScreenHelp = require('OnScreenHelp');
 
 var MetadataAccordion = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     return {
       helpSection: ''
@@ -24,7 +25,7 @@ var MetadataAccordion = React.createClass({
     this.setState({
       helpSection: helpSection
     });
-    var $onScreenHelp = $(ReactDOM.findDOMNode(this.refs.onScreenHelp));
+    var $onScreenHelp = $(ReactDOM.findDOMNode(this.onScreenHelp));
     $onScreenHelp.modal({
       backdrop: 'static'
     });
@@ -32,7 +33,7 @@ var MetadataAccordion = React.createClass({
   render: function() {
     return (
       <div className="panel-group" id="metadata-accordion">
-      <OnScreenHelp ref="onScreenHelp" section={this.state.helpSection} />
+      <OnScreenHelp ref={(ref) => this.onScreenHelp = ref} section={this.state.helpSection} />
         <div className="panel panel-default">
           <div className="panel-heading">
             <h4 className="panel-title">

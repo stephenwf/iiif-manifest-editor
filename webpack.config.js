@@ -28,6 +28,9 @@ module.exports = {
     path: __dirname,
     filename: './public/bundle.js'
   },
+  resolveLoader: {
+    root: path.join(__dirname, 'node_modules')
+  },
   resolve: {
     root: __dirname,
     modulesDirectories: [

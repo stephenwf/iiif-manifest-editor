@@ -8,6 +8,7 @@ var OpenSourceManifestDialog = require('OpenSourceManifestDialog');
 var OnScreenHelp = require('OnScreenHelp');
 
 var MetadataSidebarButtons = React.createClass({
+  customRefs: {},
   getInitialState: function() {
     return {
       helpSection: ''
@@ -17,19 +18,19 @@ var MetadataSidebarButtons = React.createClass({
     this.setState({
       helpSection: helpSection
     });
-    var $onScreenHelp = $(ReactDOM.findDOMNode(this.refs.onScreenHelp));
+    var $onScreenHelp = $(ReactDOM.findDOMNode(this.onScreenHelp));
     $onScreenHelp.modal({
       backdrop: 'static'
     });
   },
   openSaveManifestDialog: function() {
-    var $saveManifestDialog = $(ReactDOM.findDOMNode(this.refs.saveManifestDialog));
+    var $saveManifestDialog = $(ReactDOM.findDOMNode(this.saveManifestDialog));
     $saveManifestDialog.modal({
       backdrop: 'static'
     });
   },
   showOpenSourceManifestDialog: function() {
-    var $openSourceManifestDialog = $(ReactDOM.findDOMNode(this.refs.openSourceManifestDialog));
+    var $openSourceManifestDialog = $(ReactDOM.findDOMNode(this.openSourceManifestDialog));
     $openSourceManifestDialog.modal({
       backdrop: 'static'
     });
@@ -52,7 +53,7 @@ var MetadataSidebarButtons = React.createClass({
     return (
       <div className="metadata-sidebar-controls">
         <div className="row">
-          <OnScreenHelp ref="onScreenHelp" section={this.state.helpSection} />
+          <OnScreenHelp ref={(ref) => this.onScreenHelp = ref} section={this.state.helpSection} />
           <a onClick={this.hideSidebar} className="hide-sidebar btn btn-default hidden-xs" title="Hide metadata panel"><i className="fa fa-chevron-right"></i></a>
           <span className="metadata-sidebar-buttons">
             <button onClick={this.openSaveManifestDialog} className="btn btn-default metadata-sidebar-button"><i className="fa fa-download hidden-sm hidden-xs"></i> Save Manifest</button>
@@ -76,7 +77,7 @@ var MetadataSidebarButtons = React.createClass({
               }
             })()}
             <a className="help-icon pull-right" href="javascript:;" onClick={() => this.showHelp('Sidebar')} ><i className="fa fa-question-circle-o"></i></a>
-            <SaveManifestDialog ref="saveManifestDialog" />
+            <SaveManifestDialog ref={(ref) => this.saveManifestDialog = ref} />
           </span>
         </div>
         {(() => {
@@ -87,9 +88,9 @@ var MetadataSidebarButtons = React.createClass({
                   <button onClick={() => this.showOpenSourceManifestDialog()} className="btn btn-primary"><i className="fa fa-plus-circle hidden-sm hidden-xs"></i> Open Sequence</button>
                 </div>
                 <OpenSourceManifestDialog ref="openSourceManifestDialog" onSuccessHandler={this.props.sourceManifestBrowser ? this.props.sourceManifestBrowser.addSourceManifestToState : undefined}/>
-              </div> 
+              </div>
             );
-          } 
+          }
         })()}
       </div>
     );

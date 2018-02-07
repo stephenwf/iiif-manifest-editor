@@ -5,9 +5,11 @@ var classNames = require('classnames');
 var Viewer = require('Viewer');
 var MetadataSidebar = require('MetadataSidebar');
 var ThumbnailStrip = require('ThumbnailStrip');
+import CanvasPanel from './CanvasPanel';
 
 
 var EditManifest = React.createClass({
+  customRefs: {},
   componentDidMount: function() {
     $(window).on('beforeunload', function() {
       return true;
@@ -38,10 +40,10 @@ var EditManifest = React.createClass({
         <div className="edit-manifest-container container-fluid">
           <div className="row">
             <div className={viewerThumbnailStripClasses}>
-              <Viewer key={this.props.selectedCanvasId} />
+              <CanvasPanel key={this.props.selectedCanvasId} />
               <ThumbnailStrip/>
             </div>
-            <MetadataSidebar ref="sidebar"/>
+            <MetadataSidebar ref={(ref) => this.sidebar = ref} />
           </div>
         </div>
       );

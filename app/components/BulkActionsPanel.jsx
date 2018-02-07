@@ -4,13 +4,14 @@ var actions = require('actions');
 var Utils = require('Utils');
 
 var BulkActionsPanel = React.createClass({
+  customRefs: {},
   renameCanvasLabelsByPagination: function(e) {
     e.preventDefault();
-    this.props.dispatch(actions.renameCanvasLabelsByPagination(this.refs.canvasIndexOffsetPagination.value));
+    this.props.dispatch(actions.renameCanvasLabelsByPagination(this.canvasIndexOffsetPagination.value));
   },
   renameCanvasLabelsByFoliation: function(e) {
     e.preventDefault();
-    this.props.dispatch(actions.renameCanvasLabelsByFoliation(this.refs.canvasIndexOffsetFoliation.value, this.refs.foliationSide.value));
+    this.props.dispatch(actions.renameCanvasLabelsByFoliation(this.canvasIndexOffsetFoliation.value, this.foliationSide.value));
   },
   reverseSequence: function(e) {
     e.preventDefault();
@@ -36,7 +37,7 @@ var BulkActionsPanel = React.createClass({
           <div className="form-group">
             <label className="col-md-5 control-label">Start with Canvas:</label>
             <div className="col-md-6">
-              <select ref="canvasIndexOffsetPagination" className="form-control">
+              <select ref={(ref) => this.canvasIndexOffsetPagination = ref} className="form-control">
                 {
                   Object.keys(canvases).map(function(canvasIndex) {
                     var canvas = canvases[canvasIndex];
@@ -67,7 +68,7 @@ var BulkActionsPanel = React.createClass({
           <div className="form-group">
             <label className="col-md-5 control-label">Start with Canvas:</label>
             <div className="col-md-6">
-              <select ref="canvasIndexOffsetFoliation" className="form-control">
+              <select ref={(ref) => this.canvasIndexOffsetFoliation = ref} className="form-control">
                 {
                   Object.keys(canvases).map(function(canvasIndex) {
                     var canvas = canvases[canvasIndex];
@@ -82,7 +83,7 @@ var BulkActionsPanel = React.createClass({
           <div className="form-group">
             <label className="col-md-5 control-label">Start With:</label>
             <div className="col-md-6">
-              <select ref="foliationSide" className="form-control">
+              <select ref={(ref) => this.foliationSide = ref} className="form-control">
                 <option value="recto">Recto</option>
                 <option value="verso">Verso</option>
               </select>

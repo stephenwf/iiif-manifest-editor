@@ -19,7 +19,7 @@ var EditableTextArea = React.createClass({
   },
   componentDidUpdate: function() {
     if(this.state.editing) {
-      var $textareas = $(ReactDOM.findDOMNode(this.refs.textArea));
+      var $textareas = $(ReactDOM.findDOMNode(this.textArea));
       var currentTextArea = $textareas[0];
       currentTextArea.style.height = currentTextArea.scrollHeight + 'px';
       currentTextArea.style.overflowY = 'hidden';
@@ -35,7 +35,7 @@ var EditableTextArea = React.createClass({
   },
   textChanged: function() {
     // dynamically adjust the height of the text area based on content that is entered
-    var textArea = this.refs.textArea;
+    var textArea = this.textArea;
     var updatedValue = textArea.value;
     // do not allow empty field values, use N/A instead
     if(updatedValue === '') {
